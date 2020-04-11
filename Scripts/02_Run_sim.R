@@ -29,7 +29,7 @@ Sub_b <- c(1:154)       # Number of Sub-basins
 # Model's txinout directory
 Dir_tx <- "D:/04_TESIS_UNALM/04_Swat_Mantaro/03_Modelo/Modelo_uhm/Scenarios/Default/TxtInOut/"
 # Process directory 
-R_path <- "C:/Swat_model"
+R_path <- "./Swat_model"
 
 # Outputs variables
 # the verables entered are the basic ones of the hydrological balance
