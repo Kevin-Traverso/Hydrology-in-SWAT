@@ -1,16 +1,17 @@
-# .........................................................................
+# ========================================================================
 #                      HYDROLOGICAL SIMULATION IN SWAT
-# .........................................................................
+# ========================================================================
 
 'Hydrological simulation process using computational languaje R
 applied to the Mantaro river basin in Perú.
 
 Code developed for the Mg.Sc. thesis in Water Resources
+Universidad Nacional Agraria la Molina
 
-autor: Kevin Arnold Traverso Yucra
+@autor: Kevin Arnold Traverso Yucra
 mail: arnold.traverso@gmail.com'
 
-# Install/load required packages
+# Install/load required packages -----------------------------------------
 
 if(!require(tidyverse)) install.packages("tidyverse")
 if(!require(SWATplusR)) devtools::install_github("chrisschuerz/SWATplusR")
@@ -28,6 +29,7 @@ Sub_b <- c(1:154)       # Number of Sub-basins
 
 # Model's txinout directory
 Dir_tx <- "D:/04_TESIS_UNALM/04_Swat_Mantaro/03_Modelo/Modelo_uhm/Scenarios/Default/TxtInOut/"
+
 # Process directory 
 R_path <- "./Swat_model"
 
@@ -42,6 +44,7 @@ varb <- list(Pcp = define_output(file = "sub", variable = "PRECIP", unit = Sub_b
              Pet = define_output(file = "sub", variable = "PET", unit = Sub_b))
 
 # Running simulation -------------------------------------------------------
+
 Basic_sim <- run_swat2012(project_path = Dir_tx,
                           output = varb,
                           start_date = Start_d,
@@ -53,6 +56,7 @@ Basic_sim <- run_swat2012(project_path = Dir_tx,
                           keep_folder = FALSE)
 
 # Presenting results -------------------------------------------------------
+
 Sub_res <- Basic_sim %>% dplyr::select(-date) %>%
   summarise_all(., .funs = mean) %>% 
   gather(.) %>% 
@@ -62,13 +66,16 @@ Sub_res <- Basic_sim %>% dplyr::select(-date) %>%
   spread(., key = sb_comp, value = value)
 
 # Loading the shapefile of sub-basin and rivers
+
 Shp_Sb <- shapefile(x = "./Shapefiles/DEM_UHM90mutmwshed.prj")
 Shp_riv <- shapefile(x = "./Shapefiles/DEM_UHM90mutmnet.shp")
 
 # merge simulated information to shapefiles
+
 Shp_Sb <- merge(Shp_Sb, Sub_res, by = "Subbasin")
 
 # Displaying ---------------------------------------------------------------
+
 pcp <- mapview(Shp_Sb, zcol = "Pcp", col.regions = viridisLite::viridis)
 wyld <- mapview(Shp_Sb, zcol = "Wyld", col.regions = viridisLite::inferno)
 pt <- mapview(Shp_Sb, zcol = "Et", col.regions = viridisLite::cividis)
