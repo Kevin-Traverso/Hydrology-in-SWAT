@@ -19,7 +19,7 @@ Sub_b <- c(1:154)       # Number of Sub-basins
 # Model's txinout directory
 Dir_tx <- "D:/04_TESIS_UNALM/04_Swat_Mantaro/03_Modelo/Modelo_uhm/Scenarios/Default/TxtInOut/"
 # Process directory 
-R_path <- "./Swat_model"
+R_path <- "C:/Swat_model"
 
 # Outputs variables
 # the verables entered are the basic ones of the hydrological balance
@@ -40,10 +40,9 @@ Basic_sim <- run_swat2012(project_path = Dir_tx,
                           years_skip = Y_skip,
                           run_path = R_path,
                           add_date = TRUE, 
-                          keep_folder = FLASE)
+                          keep_folder = FALSE)
 
-# Mostrando resultados
-
+# Mostrando resultados -----------------------------------------------------
 Sub_res <- Basic_sim %>% dplyr::select(-date) %>%
   summarise_all(., .funs = mean) %>% 
   gather(.) %>% 
@@ -53,7 +52,6 @@ Sub_res <- Basic_sim %>% dplyr::select(-date) %>%
   spread(., key = sb_comp, value = value)
 
 # Loading the shapefile of sub-basin and rivers
-
 Shp_Sb <- shapefile(x = "./Shapefiles/DEM_UHM90mutmwshed.prj")
 Shp_riv <- shapefile(x = "./Shapefiles/DEM_UHM90mutmnet.shp")
 
@@ -61,9 +59,9 @@ Shp_riv <- shapefile(x = "./Shapefiles/DEM_UHM90mutmnet.shp")
 Shp_Sb <- merge(Shp_Sb, Sub_res, by = "Subbasin")
 
 # displaying
-pcp <- mapview(Shp_Sb, zcol = "Pcp")
-wyld <- mapview(Shp_Sb, zcol = "Wyld")
-pt <- mapview(Shp_Sb, zcol = "Et")
-pet <- mapview(Shp_Sb, zcol = "Pet")
+pcp <- mapview(Shp_Sb, zcol = "Pcp", col.regions = viridisLite::viridis)
+wyld <- mapview(Shp_Sb, zcol = "Wyld", col.regions = viridisLite::inferno)
+pt <- mapview(Shp_Sb, zcol = "Et", col.regions = viridisLite::cividis)
+pet <- mapview(Shp_Sb, zcol = "Pet", col.regions = viridisLite::magma)
 
 sync(pcp, wyld, pt, pet)
