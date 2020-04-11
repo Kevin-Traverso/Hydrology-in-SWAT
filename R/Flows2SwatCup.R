@@ -7,3 +7,5 @@
 #' 
 #' #' @author Kevin Arnold Traverso,
 #' \email {arnold.traverso@gmail.com}
+#' 
+#' 
