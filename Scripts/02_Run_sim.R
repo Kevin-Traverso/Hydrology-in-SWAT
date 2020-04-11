@@ -52,14 +52,15 @@ Sub_res <- Basic_sim %>% dplyr::select(-date) %>%
   dplyr::select(Subbasin, sb_comp, value) %>% 
   spread(., key = sb_comp, value = value)
 
-# 
+# Loading the shapefile of sub-basin and rivers
 
 Shp_Sb <- shapefile(x = "./Shapefiles/DEM_UHM90mutmwshed.prj")
 Shp_riv <- shapefile(x = "./Shapefiles/DEM_UHM90mutmnet.shp")
 
-#
+# merge simulated information to shapefiles
 Shp_Sb <- merge(Shp_Sb, Sub_res, by = "Subbasin")
 
+# displaying
 pcp <- mapview(Shp_Sb, zcol = "Pcp")
 wyld <- mapview(Shp_Sb, zcol = "Wyld")
 pt <- mapview(Shp_Sb, zcol = "Et")
