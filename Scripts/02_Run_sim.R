@@ -40,7 +40,7 @@ Basic_sim <- run_swat2012(project_path = Dir_tx,
                           years_skip = Y_skip,
                           run_path = R_path,
                           add_date = TRUE, 
-                          keep_folder = TRUE)
+                          keep_folder = FLASE)
 
 # Mostrando resultados
 
